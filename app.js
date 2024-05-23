@@ -12,6 +12,7 @@ const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./swagger.json');
 const cors = require('cors');
 const app = express();
+const router = require('./routes/router');
 
 
 /***********************************
@@ -19,9 +20,7 @@ const app = express();
  * ********************************/
 
 
-app.use('/', (req, res, next) => {
-    res.send('Welcome to the Travel Planner API');
-})
+app.use('/', router);
 
 /***********************************
  * Server Listener
