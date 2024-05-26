@@ -8,7 +8,11 @@ const travelController = require('../controllers/travelController')
  * **************************/
 
 
-router.use('/', travelController.getTravels)
+router.get('/', travelController.getTravels)
+router.get('/:id', travelController.getTravelById)
+router.post('/', travelController.createTravel)
+router.put('/:id', travelController.updateTravel)
+router.delete('/:id', travelController.deleteTravel)
 
 
 

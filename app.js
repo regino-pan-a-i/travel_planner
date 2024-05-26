@@ -9,7 +9,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
-// const swaggerDocument = require('./swagger.json');
+const swaggerDocument = require('./swagger_output.json');
 const cors = require('cors');
 const app = express();
 const router = require('./routes/router');
@@ -18,6 +18,10 @@ const router = require('./routes/router');
 /***********************************
  * Middleware
  * ********************************/
+
+app.use(bodyParser.json())
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 app.use('/', router);
