@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const userController = require('../controllers/userController')
+const util = require('../utilities/userValidation')
+const utilHandler = require('../utilities/index')
 
 
 /*****************************
@@ -8,11 +10,11 @@ const userController = require('../controllers/userController')
  * **************************/
 
 
-router.get('/', userController.getUsers)
-router.get('/:id', userController.getUserById)
-router.post('/', userController.createUser)
-router.put('/:id', userController.updateUser)
-router.delete('/:id', userController.deleteUser)
+router.get('/', utilHandler.handleErrors(userController.getUsers))
+router.get('/:id',utilHandler.handleErrors(userController.getUserById))
+router.post('/', util.userRules(), util.validate, utilHandler.handleErrors(userController.createUser))
+router.put('/:id', util.userRules(), util.validate,utilHandler.handleErrors(userController.updateUser))
+router.delete('/:id', utilHandler.handleErrors(userController.deleteUser))
 
 
 module.exports = router;

@@ -1,9 +1,10 @@
+const mongoose = require('mongoose');
 const connect = require('../database/connect')
 const User = require('../database/models/user')
 const userController = {}
 
 
-userController.getUsers = async (req, res) => {
+userController.getUsers = async (req, res, next) => {
     try{
         await connect();
 
@@ -11,14 +12,19 @@ userController.getUsers = async (req, res) => {
         res.json(users)
     }
     catch (error){
-        res.status(500).json({ message: error.message });
-
+        const err = new Error("Couldn't get users");
+        err.status = 'fail'
+        err.statusCode = 500
+        next(err)
+    }
+    finally {
+        mongoose.disconnect();
     }
 
 }
 
 
-userController.getUserById = async (req, res) => {
+userController.getUserById = async (req, res, next) => {
     try{
         await connect();
 
@@ -26,8 +32,14 @@ userController.getUserById = async (req, res) => {
         res.json(user)
     }
     catch (error){
-        res.status(500).json({ message: error.message });
+        const err = new Error(error.message);
+        err.status = "fail"
+        err.statusCode = 500
+        next(err)
 
+    }
+    finally {
+        mongoose.disconnect();
     }
 
 }
@@ -46,17 +58,71 @@ userController.createUser = async (req, res) => {
         res.status(201).send(`This is the ID for the new user: ${savedUser._id}`);
     }
     catch (error){
-        res.status(400).json({ message: error.message });
+        const err = new Error(error.message);
+        err.status = "fail"
+        err.statusCode = 500
+        next(err)
 
+    }
+    finally {
+        mongoose.disconnect();
     }
 }
 
 userController.updateUser = async (req, res) => {
-    res.send('Here is where you will update a user')
+    console.log('Here is where you will update a user')
+    try{
+        await connect();
+        const updatedContact = await User.findByIdAndUpdate(
+            { _id: req.params.id },
+            {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                password: req.body.password
+            },
+            { new: true 
+            }
+        );
+        if (!updatedContact) {
+            res.status(404).send('User not found');
+        }
+        else {
+            res.json(updatedContact);
+        }
+    } 
+    catch (error) {
+        const err = new Error(error.message);
+        err.status = "fail"
+        err.statusCode = 500
+        next(err)
+    }
+    finally {
+        mongoose.disconnect();
+    }
 }
 
 userController.deleteUser = async (req, res) => {
-    res.send('Here is where you will delete a user')
+    // res.send('Here is where you will delete a user')
+    try{
+        await connect();
+        const contac = await User.findByIdAndDelete(req.params.id);
+        if(!contac){
+            res.status(404).send('User not found');
+        }
+        else{
+            return res.json({ message: 'User deleted' })
+        }
+    } 
+    catch (error){
+        console.log('Error deleting document:', error)
+        const err = new Error(error.message);
+        err.status = "fail"
+        err.statusCode = 500
+        next(err)    }
+    finally {
+        mongoose.disconnect();
+    }
 }
 
 module.exports = userController;
