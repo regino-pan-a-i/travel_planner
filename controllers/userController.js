@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const connect = require('../database/connect')
 const User = require('../database/models/user')
+const bcrypt = require('bcryptjs');
+
 const userController = {}
 
 
@@ -44,14 +46,14 @@ userController.getUserById = async (req, res, next) => {
 
 }
 
-userController.createUser = async (req, res) => {
+userController.createUser = async (req, res, next) => {
     try{
         await connect();
         const user = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-            password: req.body.password
+            password: await bcrypt.hash(req.body.password, 10)
         })
 
         const savedUser = await user.save();    
@@ -69,7 +71,7 @@ userController.createUser = async (req, res) => {
     }
 }
 
-userController.updateUser = async (req, res) => {
+userController.updateUser = async (req, res, next) => {
     console.log('Here is where you will update a user')
     try{
         await connect();
@@ -79,7 +81,7 @@ userController.updateUser = async (req, res) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: req.body.email,
-                password: req.body.password
+                password: await bcrypt.hash(req.body.password, 10)
             },
             { new: true 
             }
@@ -102,7 +104,7 @@ userController.updateUser = async (req, res) => {
     }
 }
 
-userController.deleteUser = async (req, res) => {
+userController.deleteUser = async (req, res, next) => {
     // res.send('Here is where you will delete a user')
     try{
         await connect();
@@ -125,4 +127,98 @@ userController.deleteUser = async (req, res) => {
     }
 }
 
+userController.addUpcomingTravel = async (req,res, next) => {
+    try{
+        await connect()
+
+        const userID = req.params.id
+        const travelID = req.body.travelID
+        if(!mongoose.Schema.Types.ObjectId.isValid(travelID) || !mongoose.Schema.Types.ObjectId.isValid(userID)){
+            res.status(400).send('Invalid ID format')
+        }
+
+        const user = await User.findById(userID)
+
+        if(!user){
+            res.status(404).send('User not found')
+        }
+
+        user.upcomingTravels.push(mongoose.Types.ObjectId(travelID))
+        await user.save();
+        res.status(201).json(user);
+
+    }
+    catch(error){
+        console.log('Error adding to upcoming travels:', error)
+        const err = new Error(error.message);
+        err.status = "fail"
+        err.statusCode = 500
+        next(err)    }
+    finally {
+        mongoose.disconnect();
+    }
+}
+userController.addPastTravels = async (req,res,next) => {
+    try{
+        await connect()
+
+        const userID = req.params.id
+        const travelID = req.body.travelID
+        if(!mongoose.Schema.Types.ObjectId.isValid(travelID) || !mongoose.Schema.Types.ObjectId.isValid(userID)){
+            res.status(400).send('Invalid ID format')
+        }
+
+        const user = await User.findById(userID)
+
+        if(!user){
+            res.status(404).send('User not found')
+        }
+
+        user.pastTravels.push(mongoose.Types.ObjectId(travelID))
+        await user.save();
+        res.status(201).json(user);
+
+    }
+    catch(error){
+        console.log('Error adding to past travels:', error)
+        const err = new Error(error.message);
+        err.status = "fail"
+        err.statusCode = 500
+        next(err)    }
+    finally {
+        mongoose.disconnect();
+    }
+}
+
+userController.addLikedTravels = async (req,res,next) => {
+    try{
+        await connect()
+
+        const userID = req.params.id
+        const travelID = req.body.travelID
+        if(!mongoose.Schema.Types.ObjectId.isValid(travelID) || !mongoose.Schema.Types.ObjectId.isValid(userID)){
+            res.status(400).send('Invalid ID format')
+        }
+
+        const user = await User.findById(userID)
+
+        if(!user){
+            res.status(404).send('User not found')
+        }
+
+        user.likedTravels.push(mongoose.Types.ObjectId(travelID))
+        await user.save();
+        res.status(201).json(user);
+
+    }
+    catch(error){
+        console.log('Error adding to liked travels:', error)
+        const err = new Error(error.message);
+        err.status = "fail"
+        err.statusCode = 500
+        next(err)    }
+    finally {
+        mongoose.disconnect();
+    }
+}
 module.exports = userController;

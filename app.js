@@ -14,11 +14,14 @@ const cors = require('cors');
 const app = express();
 const router = require('./routes/router');
 const utilities = require("./utilities/index");
-
+require('./utilities/auth');
+const connect = require('./database/connect')
 
 /***********************************
  * Middleware
  * ********************************/
+
+// connect();
 app.use(cors());
 
 app.use(bodyParser.json())

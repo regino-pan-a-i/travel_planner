@@ -1,0 +1,137 @@
+//*****************
+// LOCAL HOST
+//*****************
+
+// This section will test the user collection
+###Get all users
+GET http://localhost:3000/user
+
+
+###Get all user by id
+GET http://localhost:3000/user/6652b55e2e3c6c692d9ca69d
+
+
+###Create a new user
+POST http://localhost:3000/user
+Content-Type: application/json
+{
+    firstName: "John",
+    lastName: "Doe",
+    email: "example@email.com",
+    password: "This1$astrongPassword"
+}
+
+###Update a user
+PUT http://localhost:3000/user/665ab79e48a146f692e295b5
+Content-Type: application/json
+{
+    firstName: "John",
+    lastName: "Doe",
+    email: "updated@email.com"
+    password: "@noth3rStr0ngP@ssword"
+}
+
+###Delete a user
+DELETE http://localhost:3000/user/665bc3d4f948699818bbd163
+
+// This section will test the travel collection
+
+###Get all travels
+GET http://localhost:3000/travel
+
+###Get all travel by id
+GET http://localhost:3000/travel/66612458e0ab54e074b600c4
+
+###Create a new travel
+POST http://localhost:3000/travel
+Content-Type: application/json
+{
+    destination: "New York",
+    transportation: "Plane",
+    price: 250,
+    description: "Visit the city where dreams come true"
+}
+
+###Update a travel
+PUT http://localhost:3000/travel/66612458e0ab54e074b600cb
+Content-Type : application/json
+{
+    destination: "Turkey",
+    transportation: "2 Planes",
+    price: 800,
+    description: "Get a taste of the middle east"
+}
+
+###Delete a travel
+DELETE http://localhost:3000/travel/66612458e0ab54e074b600cb
+
+
+
+
+//*****************
+// PRODUCTION 
+//*****************
+
+
+// This section will test the user collection
+###Get all users
+GET https://travel-planner-lhay.onrender.com/user
+
+
+###Get all user by id
+GET https://travel-planner-lhay.onrender.com/user/6652b55e2e3c6c692d9ca69d
+
+
+###Create a new user
+POST https://travel-planner-lhay.onrender.com/user
+Content-Type: application/json
+{
+    firstName: "John",
+    lastName: "Doe",
+    email: "example@email.com",
+    password: "This1$astrongPassword"
+}
+
+###Update a user
+PUT https://travel-planner-lhay.onrender.com/user/665ab79e48a146f692e295b5
+Content-Type: application/json
+{
+    firstName: "John",
+    lastName: "Doe",
+    email: "updated@email.com"
+    password: "@noth3rStr0ngP@ssword"
+}
+
+###Delete a user
+DELETE https://travel-planner-lhay.onrender.com/user/665bc3d4f948699818bbd163
+
+// This section will test the travel collection
+
+###Get all travels
+GET https://travel-planner-lhay.onrender.com/travel
+
+###Get all travel by id
+GET https://travel-planner-lhay.onrender.com/travel/66612458e0ab54e074b600c4
+
+###Create a new travel
+POST https://travel-planner-lhay.onrender.com/travel
+Content-Type: application/json
+{
+    destination: "New York",
+    transportation: "Plane",
+    price: 250,
+    description: "Visit the city where dreams come true"
+}
+
+###Update a travel
+PUT https://travel-planner-lhay.onrender.com/travel/66612458e0ab54e074b600cb
+Content-Type : application/json
+{
+    destination: "Turkey",
+    transportation: "2 Planes",
+    price: 800,
+    description: "Get a taste of the middle east"
+}
+
+###Delete a travel
+DELETE https://travel-planner-lhay.onrender.com/travel/66612458e0ab54e074b600cb
