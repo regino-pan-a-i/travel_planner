@@ -22,9 +22,9 @@ require('../utilities/auth');
 * Routes
 ***********/
 
-router.post('/register',util.userRules(), util.validate, (authController.register))
-router.post('/login',  (authController.login));
-router.get('/logout', (authController.logout));
+router.post('/register',util.userRules(), util.validate, utilHandler.handleErrors(authController.register))
+router.post('/login',  utilHandler.handleErrors(authController.login));
+router.get('/logout', utilHandler.handleErrors(authController.logout));
 
 router.get('/google', 
     passport.authenticate('google', { scope: ['profile', 'email'] }),

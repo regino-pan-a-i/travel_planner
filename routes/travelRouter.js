@@ -10,11 +10,11 @@ const validator = require('../utilities/travelValidation')
  * **************************/
 
 
-router.get('/', (travelController.getTravels))
-router.get('/:id', (travelController.getTravelById))
-router.post('/', validator.travelRules(), validator.validate, (travelController.createTravel))
-router.put('/:id', validator.travelRules(), validator.validate, (travelController.updateTravel))
-router.delete('/:id', (travelController.deleteTravel))
+router.get('/', utilHandler.handleErrors(travelController.getTravels))
+router.get('/:id', utilHandler.handleErrors(travelController.getTravelById))
+router.post('/', validator.travelRules(), validator.validate, utilHandler.handleErrors(travelController.createTravel))
+router.put('/:id', validator.travelRules(), validator.validate, utilHandler.handleErrors(travelController.updateTravel))
+router.delete('/:id', utilHandler.handleErrors(travelController.deleteTravel))
 
 
 

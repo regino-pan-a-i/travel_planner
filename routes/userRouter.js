@@ -11,11 +11,11 @@ const auth = require('../utilities/auth');
  * **************************/
 
 
-router.get('/', auth.authController.isLoggedIn,(userController.getUsers))
-router.get('/:id',auth.authController.isLoggedIn,(userController.getUserById))
-router.post('/', util.userRules(), util.validate, (userController.createUser))
-router.put('/:id', util.userRules(), util.validate,(userController.updateUser))
-router.delete('/:id', auth.authController.isLoggedIn,(userController.deleteUser))
+router.get('/', auth.authController.isLoggedIn,utilHandler.handleErrors(userController.getUsers))
+router.get('/:id',auth.authController.isLoggedIn,utilHandler.handleErrors(userController.getUserById))
+router.post('/', util.userRules(), util.validate, utilHandler.handleErrors(userController.createUser))
+router.put('/:id', util.userRules(), util.validate,utilHandler.handleErrors(userController.updateUser))
+router.delete('/:id', auth.authController.isLoggedIn,utilHandler.handleErrors(userController.deleteUser))
 
 
 module.exports = router;
